@@ -13,7 +13,7 @@ val dummyMovie =
         "해리 포터와 마법사의 돌",
         Poster.Resource(R.drawable.harrypotter),
         ScreeningPeriod(
-            LocalDate.of(2025, 4, 1),
+            LocalDate.of(2025, 10, 1),
             LocalDate.of(2025, 11, 25),
         ),
         RunningTime(152),

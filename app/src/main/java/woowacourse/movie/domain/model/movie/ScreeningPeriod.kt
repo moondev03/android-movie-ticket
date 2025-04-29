@@ -23,7 +23,7 @@ data class ScreeningPeriod(
             dates.add(date)
             date = date.plusDays(INTERVAL_DAY)
         }
-        return dates
+        return dates.filterNot { it.isBefore(startDate) }
     }
 
     fun getAvailableTimesFor(
