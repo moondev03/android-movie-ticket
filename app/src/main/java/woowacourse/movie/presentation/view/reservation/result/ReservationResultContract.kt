@@ -4,7 +4,7 @@ import woowacourse.movie.presentation.model.TicketBundleUiModel
 
 interface ReservationResultContract {
     interface Presenter {
-        fun fetchDate(ticketBundle: TicketBundleUiModel?)
+        fun fetchDate(ticketBundle: TicketBundleUiModel)
     }
 
     interface View {
@@ -12,7 +12,5 @@ interface ReservationResultContract {
             ticketBundle: TicketBundleUiModel,
             cancellationTime: Int,
         )
-
-        fun notifyInvalidTickets()
     }
 }

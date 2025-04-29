@@ -31,33 +31,18 @@ class ReservationSeatActivity :
         )
     }
 
-    private val invalidReservationInfoDialogInfo: DialogInfo by lazy {
-        DialogInfo(
-            title = getString(R.string.invalid_reservation_dialog_title),
-            message = getString(R.string.invalid_reservation_datetime_message),
-            positiveButtonText = getString(R.string.invalid_reservation_dialog_positive),
-            onClickPositiveButton = {
-                onBackPressedDispatcher.onBackPressed()
-            },
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupActionBar()
 
         val screen = intent?.getParcelableCompat<ScreenUiModel>(BUNDLE_KEY_SCREEN)
-        val reservationInfo =
-            if (savedInstanceState == null) {
-                intent?.getParcelableCompat<ReservationInfoUiModel>(BUNDLE_KEY_RESERVATION_INFO)
-            } else {
-                savedInstanceState.getParcelableCompat<ReservationInfoUiModel>(
-                    BUNDLE_KEY_RESERVATION_INFO,
-                )
-            }
-
+        val reservationInfo = getReservationInfo(savedInstanceState)
         presenter.fetchData(reservationInfo, screen)
     }
+
+    private fun getReservationInfo(savedInstanceState: Bundle?): ReservationInfoUiModel =
+        savedInstanceState?.getParcelableCompat<ReservationInfoUiModel>(BUNDLE_KEY_RESERVATION_INFO)
+            ?: intent.getParcelableCompat<ReservationInfoUiModel>(BUNDLE_KEY_RESERVATION_INFO)
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
@@ -103,10 +88,6 @@ class ReservationSeatActivity :
     override fun notifyPublishedTickets(ticketBundle: TicketBundleUiModel) {
         val intent = ReservationResultActivity.newIntent(this, ticketBundle)
         startActivity(intent)
-    }
-
-    override fun notifyInvalidReservationInfo() {
-        views.dialog.show(invalidReservationInfoDialogInfo)
     }
 
     override fun notifySeatUpdateFailed(message: String) {

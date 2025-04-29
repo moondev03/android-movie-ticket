@@ -19,22 +19,17 @@ class ReservationSeatPresenter(
     val reservationInfo get() = _reservationInfo?.toUiModel()
 
     override fun fetchData(
-        reservationInfoUiModel: ReservationInfoUiModel?,
+        reservationInfo: ReservationInfoUiModel,
         screen: ScreenUiModel?,
     ) {
-        reservationInfoUiModel?.let { uiModel ->
-            _reservationInfo = uiModel.toModel()
-            view.showScreen(
-                uiModel,
-                screen ?: Screen.DEFAULT_SCREEN.toUiModel(),
-                _reservationInfo?.seats?.map { it.toUiModel() } ?: emptyList(),
-                publishTicketBundle()?.totalPrice ?: 0,
-                canPublish(),
-            )
-            return
-        }
-
-        view.notifyInvalidReservationInfo()
+        _reservationInfo = reservationInfo.toModel()
+        view.showScreen(
+            reservationInfo,
+            screen ?: Screen.DEFAULT_SCREEN.toUiModel(),
+            _reservationInfo?.seats?.map { it.toUiModel() } ?: emptyList(),
+            publishTicketBundle()?.totalPrice ?: 0,
+            canPublish(),
+        )
     }
 
     override fun updateSeat(seat: SeatUiModel) {

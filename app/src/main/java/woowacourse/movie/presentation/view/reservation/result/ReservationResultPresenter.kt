@@ -6,12 +6,7 @@ import woowacourse.movie.presentation.model.TicketBundleUiModel
 class ReservationResultPresenter(
     private val view: ReservationResultContract.View,
 ) : ReservationResultContract.Presenter {
-    override fun fetchDate(ticketBundle: TicketBundleUiModel?) {
-        ticketBundle?.let { bundle ->
-            view.showScreen(bundle, TicketMachine.CANCELLATION_TIME)
-            return
-        }
-
-        view.notifyInvalidTickets()
+    override fun fetchDate(ticketBundle: TicketBundleUiModel) {
+        view.showScreen(ticketBundle, TicketMachine.CANCELLATION_TIME)
     }
 }

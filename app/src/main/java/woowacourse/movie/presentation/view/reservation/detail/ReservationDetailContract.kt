@@ -10,7 +10,7 @@ import java.time.LocalTime
 interface ReservationDetailContract {
     interface Presenter {
         fun fetchData(
-            movie: MovieUiModel?,
+            movie: MovieUiModel,
             initCount: Int? = null,
             dateTime: LocalDateTime? = null,
         )

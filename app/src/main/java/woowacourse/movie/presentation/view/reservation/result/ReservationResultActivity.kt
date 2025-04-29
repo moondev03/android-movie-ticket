@@ -9,7 +9,6 @@ import woowacourse.movie.R
 import woowacourse.movie.presentation.base.BaseActivity
 import woowacourse.movie.presentation.extension.getParcelableCompat
 import woowacourse.movie.presentation.model.TicketBundleUiModel
-import woowacourse.movie.presentation.util.DialogInfo
 import woowacourse.movie.presentation.view.movies.MoviesActivity
 
 class ReservationResultActivity :
@@ -18,23 +17,12 @@ class ReservationResultActivity :
     private val views: ReservationResultViews by lazy { ReservationResultViews(this) }
     private val presenter: ReservationResultPresenter by lazy { ReservationResultPresenter(this) }
 
-    private val invalidTicketsDialogInfo: DialogInfo by lazy {
-        DialogInfo(
-            title = getString(R.string.invalid_tickets_dialog_title),
-            message = getString(R.string.invalid_tickets_dialog_message),
-            positiveButtonText = getString(R.string.invalid_tickets_dialog_positive),
-            onClickPositiveButton = {
-                onBackPressedDispatcher.onBackPressed()
-            },
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupActionBar()
         setBackPressedDispatcher()
 
-        val ticketBundle = intent?.getParcelableCompat<TicketBundleUiModel>(BUNDLE_KEY_TICKET_BUNDLE)
+        val ticketBundle = intent.getParcelableCompat<TicketBundleUiModel>(BUNDLE_KEY_TICKET_BUNDLE)
         presenter.fetchDate(ticketBundle)
     }
 
@@ -53,10 +41,6 @@ class ReservationResultActivity :
         cancellationTime: Int,
     ) {
         views.bindReservationResult(ticketBundle, cancellationTime)
-    }
-
-    override fun notifyInvalidTickets() {
-        views.dialog.show(invalidTicketsDialogInfo)
     }
 
     private fun setupActionBar() {

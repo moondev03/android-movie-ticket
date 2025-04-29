@@ -130,16 +130,4 @@ class ReservationDetailPresenterTest {
         // Then: 예매 가능한 날짜가 없다는 다이얼로그를 보여준다.
         verify { view.notifyNoAvailableDates() }
     }
-
-    @Test
-    fun `영화 정보를 불러오지 못하는 경우 다이얼로그를 보여준다`() {
-        // Given: View가 예매 불가 알림을 수행하도록 설정한다.
-        every { view.notifyNoAvailableDates() } just Runs
-
-        // When: null 데이터를 fetchData로 전달하면
-        presenter.fetchData(null)
-
-        // Then: 예매 가능한 영화 정보가 없다는 다이얼로그를 보여준다.
-        verify { view.notifyNoAvailableDates() }
-    }
 }

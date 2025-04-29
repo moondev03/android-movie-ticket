@@ -46,18 +46,6 @@ class ReservationSeatPresenterTest {
     }
 
     @Test
-    fun `예매 정보를 불러오지 못하면 메시지를 노출한다`() {
-        // Given: view의 notifyInvalidReservationInfo 동작을 설정한다
-        every { view.notifyInvalidReservationInfo() } just Runs
-
-        // When: presenter가 데이터를 불러온다
-        presenter.fetchData(null, Screen.DEFAULT_SCREEN.toUiModel())
-
-        // Then: view에 notifyInvalidReservationInfo 호출되어야 한다
-        verify { view.notifyInvalidReservationInfo() }
-    }
-
-    @Test
     fun `선택한 좌석 정보를 갱신한다`() {
         val seat = SeatUiModel(0, 1, SeatTypeUiModel.B_CLASS)
 

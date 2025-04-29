@@ -15,20 +15,15 @@ class ReservationDetailPresenter(
     private val view: ReservationDetailContract.View,
 ) : ReservationDetailContract.Presenter {
     private val screen: Screen = Screen.DEFAULT_SCREEN
-    private var movie: Movie? = null
+    private lateinit var movie: Movie
     private var reservationCount = ReservationCount()
 
     override fun fetchData(
-        movie: MovieUiModel?,
+        movie: MovieUiModel,
         initCount: Int?,
         dateTime: LocalDateTime?,
     ) {
-        this.movie = movie?.toModel()
-        if (movie == null) {
-            view.notifyNoAvailableDates()
-            return
-        }
-
+        this.movie = movie.toModel()
         initReservationCount(initCount)
         setupView(dateTime)
     }
@@ -51,11 +46,9 @@ class ReservationDetailPresenter(
     }
 
     override fun onReserve(reservationDateTime: LocalDateTime) {
-        val currentMovie = movie ?: return
-
         val reservationInfo =
             ReservationInfo(
-                currentMovie.title,
+                movie.title,
                 reservationDateTime,
                 reservationCount,
             ).toUiModel()
@@ -64,7 +57,7 @@ class ReservationDetailPresenter(
     }
 
     private fun setupView(dateTime: LocalDateTime?) {
-        movie?.let {
+        movie.let {
             view.showScreen(it.toUiModel())
             view.updateReservationCount(reservationCount.value, reservationCount.isValid())
             setAvailableItems(dateTime)
@@ -108,13 +101,13 @@ class ReservationDetailPresenter(
 
     private fun getAvailableDates(): List<LocalDate> {
         val now = LocalDate.now()
-        return movie?.screeningPeriod?.getAvailableDates(now).orEmpty()
+        return movie.screeningPeriod.getAvailableDates(now)
     }
 
     private fun getAvailableTimesForDate(date: LocalDate?): List<LocalTime> {
         if (date == null) return emptyList()
         val now = LocalDateTime.now()
-        return movie?.screeningPeriod?.getAvailableTimesFor(now, date).orEmpty()
+        return movie.screeningPeriod.getAvailableTimesFor(now, date)
     }
 
     private fun ReservationCount.isValid(): Boolean = value > ReservationCount.RESERVATION_MIN_COUNT
